@@ -1,5 +1,11 @@
 import numpy as np
 from plot import plot_intensity 
+from scipy.signal import find_peaks
+
+def get_maxima_and_minima(x_positions, intensities, prominence=0.01):
+    max_idx, _ = find_peaks(intensities, prominence=prominence)
+    min_idx, _ = find_peaks(-intensities, prominence=prominence)
+    return x_positions[max_idx], x_positions[min_idx]
 
 def speaker_positions(num_speakers, spacing):
     half_span = (num_speakers - 1) * spacing / 2
@@ -29,5 +35,8 @@ def calculate_intensity(num_speakers, spacing, obs_distance, frequency, steering
             # To compute the amplitude, we use (A_0 / r) * e^(i * phase) - amplitude decreases with a factor of 1/r
             total_amplitude += (A_0 / r) * np.exp(1j * phase)
         intensities[i] = np.square(np.abs((total_amplitude)))
+    maxima, minima = get_maxima_and_minima(x_positions, intensities)
+    print(f"Maxima positions: {maxima}")
+    print(f"Minima positions: {minima}")
     plot_intensity(x_positions, intensities)
 
