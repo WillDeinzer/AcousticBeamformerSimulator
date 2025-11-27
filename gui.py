@@ -23,18 +23,18 @@ class BeamformerGUI:
         spacing_entry.grid(row=1, column=1, pady=5)
         
         ttk.Label(input_frame, text="Observation Distance (m):").grid(row=2, column=0, sticky=tk.W, pady=5)
-        self.distance = tk.DoubleVar(value=2.0)
+        self.distance = tk.DoubleVar(value=1.0)
         distance_entry = ttk.Entry(input_frame, textvariable=self.distance, width=15)
         distance_entry.grid(row=2, column=1, pady=5)
         
         ttk.Label(input_frame, text="Frequency (Hz):").grid(row=3, column=0, sticky=tk.W, pady=5)
-        self.frequency = tk.DoubleVar(value=1000.0)
+        self.frequency = tk.DoubleVar(value=4000)
         freq_entry = ttk.Entry(input_frame, textvariable=self.frequency, width=15)
         freq_entry.grid(row=3, column=1, pady=5)
         
-        ttk.Label(input_frame, text="Steering Angle (degrees):").grid(row=4, column=0, sticky=tk.W, pady=5)
-        self.steering_angle = tk.DoubleVar(value=0.0)
-        angle_entry = ttk.Entry(input_frame, textvariable=self.steering_angle, width=15)
+        ttk.Label(input_frame, text="Speaker width (m):").grid(row=4, column=0, sticky=tk.W, pady=5)
+        self.speaker_width = tk.DoubleVar(value=0.003)
+        angle_entry = ttk.Entry(input_frame, textvariable=self.speaker_width, width=15)
         angle_entry.grid(row=4, column=1, pady=5)
         
         run_button = ttk.Button(input_frame, text="Run Simulation", command=self.simulate)
@@ -45,14 +45,14 @@ class BeamformerGUI:
         speaker_spacing = self.spacing.get()
         obs_distance = self.distance.get()
         frequency = self.frequency.get()
-        steering_angle = self.steering_angle.get()
+        speaker_width = self.speaker_width.get()
 
-        if n_speakers < 2 or speaker_spacing < 0 or obs_distance < 0 \
-            or frequency < 0 or steering_angle < 0 or steering_angle > 360:
+        if n_speakers < 1 or speaker_spacing < 0 or obs_distance < 0 \
+            or frequency < 0 or speaker_width < 0:
             messagebox.showerror("Invalid Input", "Invalid inputs")
             return
         else:
-            calculate_intensity(n_speakers, speaker_spacing, obs_distance, frequency, steering_angle)
+            calculate_intensity(n_speakers, speaker_spacing, obs_distance, frequency, speaker_width)
         
 if __name__ == "__main__":
     root = tk.Tk()
